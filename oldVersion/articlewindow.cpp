@@ -1,35 +1,29 @@
-#include "journalarticlewidget.h"
-#include "ui_journalarticlewidget.h"
-#include "article.h"
+#include "articlewindow.h"
+#include "ui_mainwindow.h"
 
+QString emptyField = "Нужно заполнить поле %1";
 
-
-JournalArticleWidget::JournalArticleWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::JournalArticleWidget)
+MainWindow::MainWindow(QWidget *parent) :
+  QMainWindow(parent),
+  ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-  emptyField = new QString("Нужно заполнить поле %1");
-  article = new Biblio::Article;
+  ui->setupUi(this);
+  litera = new Literature;
   mBox = new QMessageBox;
 
-  //  if (article->Load_data_from_file(QString("infile.txt")))
-  //      article->main_string_normalization((*article->main_string_data));
+  //  if (litera->Load_data_from_file(QString("infile.txt")))
+  //      litera->main_string_normalization((*litera->main_string_data));
   //   add_items();
-  //else article->main_string_normalization(ui->input_text->toPlainText());
-  //qDebug() >> article->temp_string_list->size();
+  //else litera->main_string_normalization(ui->input_text->toPlainText());
+  //qDebug() << litera->temp_string_list->size();
 }
 
-JournalArticleWidget::~JournalArticleWidget()
+MainWindow::~MainWindow()
 {
-    delete ui;
-    delete emptyField;
-    delete article;
-    delete mBox;
+  delete ui;
 }
 
-
-void JournalArticleWidget::on_pushButton_clicked() //Кнопка генерации ГОСТа
+void MainWindow::on_pushButton_clicked() //Кнопка генерации ГОСТа
 {
 
   QString t_author;
@@ -39,23 +33,23 @@ void JournalArticleWidget::on_pushButton_clicked() //Кнопка генерац
   QString t_jurnal;
   QString t_volume;
   QString t_number;
-  //ui->listWidget->addItem(article->author_normalization(ui->author->text()));
+  //ui->listWidget->addItem(litera->author_normalization(ui->author->text()));
   if (ui->author->text().isEmpty()){
-      mBox->setText(emptyField->arg("\"Авторы\" (первое)"));
+      mBox->setText(emptyField.arg("\"Авторы\" (первое)"));
       mBox->exec();
       return;
     }
   else
     t_author = ui->author->text();
   if (ui->nazva->text().isEmpty()){
-      mBox->setText(emptyField->arg("\"Название\" (второе)"));
+      mBox->setText(emptyField.arg("\"Название\" (второе)"));
       mBox->exec();
       return;
     }
   else
     t_title = ui->nazva->text();
   if (ui->jurnal->text().isEmpty()){
-      mBox->setText(emptyField->arg("\"Назавание Журнала\" (третье)"));
+      mBox->setText(emptyField.arg("\"Назавание Журнала\" (третье)"));
       mBox->exec();
       return;
     }
@@ -63,11 +57,11 @@ void JournalArticleWidget::on_pushButton_clicked() //Кнопка генерац
     t_jurnal = ui->jurnal->text();
 
   if (ui->year->text().isEmpty()){
-      mBox->setText(emptyField->arg("\"Год издательства\" (шестое)"));
+      mBox->setText(emptyField.arg("\"Год издательства\" (шестое)"));
       mBox->exec();
       return;
     }
-  else if (!ui->year->text().contains(QRegExp("\\d"))){
+  else if (!ui->year->text().contains(QRegExp("\\d{4,}"))){
       mBox->setText("Не корректно введен год издательства");
       mBox->exec();
       return;
@@ -75,7 +69,7 @@ void JournalArticleWidget::on_pushButton_clicked() //Кнопка генерац
   else
     t_year = ui->year->text();
   if (ui->pages->text().isEmpty()){
-      mBox->setText(emptyField->arg("\"Страницы\" (седьмое)"));
+      mBox->setText(emptyField.arg("\"Страницы\" (седьмое)"));
       mBox->exec();
       return;
     }
@@ -100,35 +94,31 @@ void JournalArticleWidget::on_pushButton_clicked() //Кнопка генерац
   //    QString t_volume(" 92,");
   //    QString t_number("4,");
 
-  Biblio::Article article(t_author, t_title, t_year, t_volume, t_number, t_pages, t_jurnal);
-  articlesList.append(article);
-  QString str = article.generate_GOST();
-
+  QString str = litera->generate_GOST(t_author, t_title, t_year, t_volume, t_number, t_pages, t_jurnal);
   ui->input_text->clear();
   ui->input_text->setText(str);
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+  litera->main_string_normalization(QString(ui->input_text->toPlainText()));
+  add_items();
 
 }
 
-//void JournalArticleWidget::on_pushButton_3_clicked()
-//{
-//  //article->main_string_normalization(QString(ui->input_text->toPlainText()));
-//  //add_items();
+void MainWindow::add_items(){
+  QString spisok;
+  for (int i = 0; i < litera->temp_string_list->size(); i++){
 
-//}
+      ui->listWidget->addItem(litera->temp_string_list->at(i));
+      spisok.push_back((*litera->temp_string_list)[i] + "\n");
+    }
 
-//void JournalArticleWidget::add_items(){
-//  QString spisok;
-//  for (int i = 0; i < article->temp_string_list->size(); i++){
+  ui->textEdit->clear();
+  ui->textEdit->setText(spisok);
+}
 
-//      ui->listWidget->addItem(article->temp_string_list->at(i));
-//      spisok.push_back((*article->temp_string_list)[i] + "\n");
-//    }
-
-//  ui->textEdit->clear();
-//  ui->textEdit->setText(spisok);
-//}
-
-void JournalArticleWidget::on_pushButton_2_clicked() //clear lineEdits
+void MainWindow::on_pushButton_2_clicked() //clear lineEdits
 {
   ui->author->clear();
   ui->jurnal->clear();
@@ -138,4 +128,3 @@ void JournalArticleWidget::on_pushButton_2_clicked() //clear lineEdits
   ui->T->clear();
   ui->number->clear();
 }
-

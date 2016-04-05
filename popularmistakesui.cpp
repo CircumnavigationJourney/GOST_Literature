@@ -19,6 +19,7 @@ void PopularMistakesUI::on_MistakesCorrectionButton_clicked()
     if(ui->inputText->toPlainText().isEmpty()) return;
 
     QString inputText = ui->inputText->toHtml();
+    Biblio::Literature::deleteExcessControlSymbols(inputText);
     QStringList *result = Biblio::main_string_normalization(inputText);
     QString resultStr = result->join("\n");
     delete result;

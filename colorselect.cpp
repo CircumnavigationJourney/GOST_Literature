@@ -16,12 +16,12 @@ ColorSelect::ColorSelect(QColor color, QWidget *parent) :
     connect(ui->spinBoxG, SIGNAL(valueChanged(int)), this, SLOT(onColorChanged()));
     connect(ui->spinBoxB, SIGNAL(valueChanged(int)), this, SLOT(onColorChanged()));
     onColorChanged();
-    qDebug() << "creaed";
+
 }
 
 ColorSelect::~ColorSelect()
 {
-    qDebug() << "destructed";
+
     delete ui;
 }
 

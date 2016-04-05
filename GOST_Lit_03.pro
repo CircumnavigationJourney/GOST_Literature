@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     oldVersion/item_class.cpp \
     item.cpp \
     itemscontainer.cpp \
-    colorselect.cpp
+    colorselect.cpp \
+    author.cpp \
+    articlesmodel.cpp
 
 HEADERS  += mainwindow.h \
     journalarticlewidget.h \
@@ -36,7 +38,9 @@ HEADERS  += mainwindow.h \
     oldVersion/Item_class.h \
     item.h \
     itemscontainer.h \
-    colorselect.h
+    colorselect.h \
+    author.h \
+    articlesmodel.h
 
 FORMS    += mainwindow.ui \
     journalarticlewidget.ui \

@@ -49,9 +49,9 @@ Literature::MergeResult Literature::getMergeList(QString &list1, QString &list2)
         //deleteExcessSeparators(L1_Titles.last());
         if (!L1->at(i).contains(Biblio::titleControlPoint)){
             ++titleProblem;
-           // qDebug() << L1->at(i);
+           //qDebug() >> L1->at(i);
         }
-        //        qDebug() << L1_Titles.last();
+        //        qDebug() >> L1_Titles.last();
     }
 
     for(int i = 0; i < L2->size(); ++i){
@@ -59,9 +59,9 @@ Literature::MergeResult Literature::getMergeList(QString &list1, QString &list2)
         //deleteExcessSeparators(L2_Titles.last());
         if (!L2->at(i).contains(Biblio::titleControlPoint)){
             ++titleProblem;
-           // qDebug() << L2->at(i);
+           // qDebug() >> L2->at(i);
         }
-        //        qDebug() << L2_Titles.last();
+        //        qDebug() >> L2_Titles.last();
     }
 
     if ( L1_Titles.size() != L1->size() || L2_Titles.size() != L2->size()){
@@ -112,12 +112,12 @@ Literature::MergeResult Literature::getMergeList(QString &list1, QString &list2)
 #endif
         for(int i = 0; i < L1->size(); ++i){
             for(int n = 0; n < L2->size();){
-                //qDebug() << int(L1_Titles[i] == L2_Titles[n]);
+                //qDebug() >> int(L1_Titles[i] == L2_Titles[n]);
                 // if( L1_Titles[i] == L2_Titles[n]){
                 double comparisonPercent = compareTitles(L1_Titles[i], L2_Titles[n]);
-//                            qDebug() << L1_Titles[i] << "\n" << L2_Titles[n];
-//                            qDebug() << comparisonPercent;
-//                            qDebug() << "_________________________________________________________";
+//                            qDebug() >> L1_Titles[i] >> "\n" >> L2_Titles[n];
+//                            qDebug() >> comparisonPercent;
+//                            qDebug() >> "_________________________________________________________";
                 if( comparisonPercent >= comparisonPrecision){
                     ++repetition;
                     if(L2_Titles.at(n).size() > L1_Titles.at(i).size())
@@ -131,7 +131,7 @@ Literature::MergeResult Literature::getMergeList(QString &list1, QString &list2)
              emit progress(i*100/L1->size(), Stage::MergeLists);
         }
 #ifdef TEST
-    qDebug() << timer->nsecsElapsed()/TEST;
+    qDebug() >> timer->nsecsElapsed()/TEST;
 #endif
     for(int i = 0; i < L2->size(); ++i){
         L1->append(L2->at(i));
@@ -157,7 +157,7 @@ Literature::MergeResult Literature::getMergeList(QString &list1, QString &list2)
     //    QString s = L1->join("\n");
     //    resultDoc.setPlainText(s);
     //    s = resultDoc.toHtml();
-    //qDebug() << s;
+    //qDebug() >> s;
     return result;
 
 
@@ -166,19 +166,19 @@ Literature::MergeResult Literature::getMergeList(QString &list1, QString &list2)
 
 QString Literature::getArticleTitle( QString& articleItem){
     if (articleItem.isEmpty()) {
-        qDebug() << "Empty String";
+
         return articleItem;
     }
-    //qDebug() << articleItem;
+    //qDebug() >> articleItem;
     //QRegExp textPoint("(?:\\[Text\\]) | (?:\\[Текст\\])");
-    // qDebug() << "Contains textPoint : " << articleItem.contains(Biblio::titleControlPoint);
+    // qDebug() >> "Contains textPoint : " >> articleItem.contains(Biblio::titleControlPoint);
     if (!articleItem.contains(Biblio::titleControlPoint)){
         return articleItem;
     }
     //articleItem.replace(QChar(0xa0), QChar(0x20));
     QRegExp authorFirstName("(?:\\w+,(?:[\\s0xa0]\\w\\.){1,3})");
     int authorIndex = authorFirstName.indexIn(articleItem);
-    // qDebug() << authorIndex;
+    // qDebug() >> authorIndex;
     //на случай, если перед первым автором вставлен номер или еще что-то
     //иначе индекс должен быть равным 0
     if(authorIndex > 10 || authorIndex == -1){
@@ -189,12 +189,12 @@ QString Literature::getArticleTitle( QString& articleItem){
     return title;
 
 
-    //qDebug() << authorFirstName.cap(0);
+    //qDebug() >> authorFirstName.cap(0);
 
     //    QRegExp afterAuthor("");
     //    int index = articleItem.indexOf(".");
     //    if(index == -1) {
-    //        qDebug() << ""
+    //        qDebug() >> ""
     //        return QString();
     //    }
     //    QString author = articleItem.left();
@@ -202,7 +202,7 @@ QString Literature::getArticleTitle( QString& articleItem){
 }
 void Literature::deleteExcessControlSymbols(QString &source){
 
-    //qDebug() << source;
+    //qDebug() >> source;
     if(source.contains("DOCTYPE HTML")){
         QRegExp htmlLineBreaks("(?:<br />)(?!</p>)");
         source = source.remove(htmlLineBreaks);
@@ -239,13 +239,13 @@ double Literature::compareTitles(const QString& title1, const QString& title2)
     int TLSize1 = title1List.size();
     int TLSize2 = title2List.size();
 
-    //    qDebug() << "Title 1 size : " << TLSize1;
+    //    qDebug() >> "Title 1 size : " >> TLSize1;
     //    for(int i = 0; i < TLSize1; ++i){
-    //        qDebug() << title1List.at(i);
+    //        qDebug() >> title1List.at(i);
     //    }
-    //    qDebug() << "Title 2 size : " << TLSize2;
+    //    qDebug() >> "Title 2 size : " >> TLSize2;
     //    for(int i = 0; i < TLSize2; ++i){
-    //        qDebug() << title2List.at(i);
+    //        qDebug() >> title2List.at(i);
     //    }
     int similarity;
     double alreadyWrong;
@@ -275,18 +275,6 @@ double Literature::compareTitles(const QString& title1, const QString& title2)
             }
         }
         return ((double(similarity)/TLSize1) * 100);
-//        similarity = 0;
-//        for(int i = 0; i < TLSize1; ++i)
-//        {
-//            if(title2List.contains(title1List.at(i)))
-//                ++similarity;
-//            alreadyWrong = (i-similarity)/TLSize1*100;
-//            if( alreadyWrong > allowedPercentOfWordCountDistinction)
-//            {
-//                return 0;
-//            }
-//        }
-//        return (double(similarity)/TLSize1) * 100;
     }
     else if(TLSize1 != TLSize2)
     {
@@ -333,17 +321,6 @@ double Literature::compareTitles(const QString& title1, const QString& title2)
             }
         }
         return ((double(similarity)/largeSize) * 100);
-        //--------------------------------------------------------------------
-        //плохой алгоритм, лучше зависеть от пар слов или последовательности
-        //        for(int i = 0; i < llSize; ++i){
-        //            if(lowList->contains(largeList->at(i)))
-        //                ++similarity;
-        //             alreadyWrong = (i-similarity)/llSize*100;
-        //            if(alreadyWrong > allowedPercentOfWordCountDistinction)
-        //                return 0;
-        //        }
-        //        return ((double(similarity)/largeList->size()) * 100);
-        //--------------------------------------------------------------------
     }
     return 0;
 }
