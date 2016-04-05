@@ -13,6 +13,6 @@
 
 Как это выглядит:
 
-![alt tag](app_pics/article.png)
+
 ![alt tag](app_pics/details.png)
 ![alt tag](app_pics/lists.png)
