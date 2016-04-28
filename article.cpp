@@ -21,7 +21,7 @@ Article::Article(QString &_authors, QString &_title,QString &_year,QString &_vol
     getNumber(_number);
     getJournal(_journal);
     getPages(_pages);
-
+    GOST = generate_GOST();
 }
 
 //*****************************************************************************************
@@ -212,7 +212,9 @@ bool Article::is_eng(QString &undefLangString) const {
 QString Article::generate_GOST(){
     qDebug() << "generate_GOST()";
 
-
+    if(authors.isEmpty()){
+        return QString();
+    }
     //определение языка статьи
     int eng = is_eng(title);
     int authors_number = authors_count();

@@ -10,9 +10,12 @@ JournalArticleWidget::JournalArticleWidget(QWidget *parent) :
 {
     ui->setupUi(this);
   emptyField = new QString("Нужно заполнить поле %1");
-  article = new Biblio::Article;
+  //article = new Biblio::Article;
   mBox = new QMessageBox;
 
+  articlesList = QSharedPointer<QList<Biblio::Article>> (new QList<Biblio::Article>) ;
+  articlesModel.setData(articlesList);
+   ui->listView->setModel(&articlesModel);
   //  if (article->Load_data_from_file(QString("infile.txt")))
   //      article->main_string_normalization((*article->main_string_data));
   //   add_items();
@@ -24,7 +27,7 @@ JournalArticleWidget::~JournalArticleWidget()
 {
     delete ui;
     delete emptyField;
-    delete article;
+    //delete article;
     delete mBox;
 }
 
@@ -101,7 +104,7 @@ void JournalArticleWidget::on_pushButton_clicked() //Кнопка генерац
   //    QString t_number("4,");
 
   Biblio::Article article(t_author, t_title, t_year, t_volume, t_number, t_pages, t_jurnal);
-  articlesList.append(article);
+  articlesModel.append(article);
   QString str = article.generate_GOST();
 
   ui->input_text->clear();

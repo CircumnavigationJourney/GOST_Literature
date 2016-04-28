@@ -2,7 +2,7 @@
 #define JOURNALARTICLEWIDGET_H
 
 #include <QWidget>
-#include "article.h"
+#include "articlesmodel.h"
 
 namespace Ui {
 class JournalArticleWidget;
@@ -12,7 +12,9 @@ class JournalArticleWidget : public QWidget
 {
     Q_OBJECT
  private:
-    QList<Biblio::Article> articlesList;
+    QSharedPointer<QList<Biblio::Article>> articlesList;
+    ArticlesModel articlesModel;
+
     Biblio::Article* article;
     QMessageBox *mBox;
 public:

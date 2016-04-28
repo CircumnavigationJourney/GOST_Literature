@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
     LitTypeWidgetsContainer->setCurrentWidget(journalArctileUI);
     QIcon windowIcon(":images/windowIcon.png");
     setWindowIcon(windowIcon);
+
+
 }
 
 MainWindow::~MainWindow()

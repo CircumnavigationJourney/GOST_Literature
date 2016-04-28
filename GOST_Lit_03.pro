@@ -10,6 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = GOST_Lit_03
 TEMPLATE = app
+RC_FILE = myapp.rc
 CONFIG += c++11
 
 SOURCES += main.cpp\

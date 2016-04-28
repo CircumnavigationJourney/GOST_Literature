@@ -48,6 +48,7 @@ private:
     void getPages(QString &rawPages);
 
 public:
+    bool operator<(const Article& article){return title < article.title;}
     friend QDataStream & operator<<(QDataStream &out, const Article &article);
     friend QDataStream & operator>>(QDataStream &in, Article &article);
     Article();
